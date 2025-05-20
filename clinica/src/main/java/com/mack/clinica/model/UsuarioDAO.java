@@ -42,7 +42,7 @@ public class UsuarioDAO {
         return null;
     }
 
-    // Busca os dados COMPLETOS do usuario
+    // Busca os dados COMPLETOS do usuario pelo ID
     public static Usuario buscarPorId(int id, String realPathBase) {
         try (Connection conn = DatabaseConnection.getConnection(realPathBase)) {
             String sql = "SELECT id, nome, email, cpf, celular, tipo FROM usuarios WHERE id = ?";
