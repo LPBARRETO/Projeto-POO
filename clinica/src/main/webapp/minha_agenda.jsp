@@ -34,7 +34,8 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Data e Hora</th>
+                                <th>Data</th> 
+                                <th>Hora</th>
                                 <th>Médico</th>
                                 <th>Status</th>
                             </tr>
@@ -42,7 +43,9 @@
                         <tbody>
                             <c:forEach var="consulta" items="${consultas}">
                                 <tr>
-                                    <td>${consulta.dataHora}</td>
+                                    <!-- <td>${consulta.dataHora}</td> Data e hora original-->
+                                    <td>${consulta.dataFormatada}</td>
+                                    <td>${consulta.horaFormatada}</td>
                                     <td>${consulta.nomeMedico}</td>
                                     <td>${consulta.status}</td>
                                 </tr>

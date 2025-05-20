@@ -1,7 +1,8 @@
 /* Arquivo style.css */
 
 /* Reset básico */
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -13,7 +14,7 @@ body, html {
     padding: 30px;
     margin: 30px auto;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 600px;
 }
@@ -21,7 +22,8 @@ body, html {
 .content {
     padding: 20px;
     max-width: 600px;
-    margin: 20px auto; /* centraliza */
+    margin: 20px auto;
+    /* centraliza */
     text-align: center;
 }
 
@@ -60,7 +62,8 @@ body, html {
 }
 
 
-h1, h2 {
+h1,
+h2 {
     text-align: center;
     color: #333;
 }
@@ -71,7 +74,9 @@ form label {
     color: #555;
 }
 
-form input, form select, form button {
+form input,
+form select,
+form button {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -92,7 +97,8 @@ form button:hover {
     background-color: #0056b3;
 }
 
-.button, .logout-button {
+.button,
+.logout-button {
     display: inline-block;
     padding: 10px 20px;
     margin-top: 20px;
@@ -103,7 +109,8 @@ form button:hover {
     transition: background-color 0.3s;
 }
 
-.button:hover, .logout-button:hover {
+.button:hover,
+.logout-button:hover {
     background-color: #218838;
 }
 
@@ -135,17 +142,47 @@ form button:hover {
 
 /* Estilo para o título principal */
 .content h1 {
-    font-size: 32px;      /* Título maior */
-    margin-top: 20px;     /* Espaço no topo */
-    margin-bottom: 10px;  /* Espaço entre o título e o parágrafo */
-    text-align: center;   /* Centraliza o título */
+    font-size: 32px;
+    /* Título maior */
+    margin-top: 20px;
+    /* Espaço no topo */
+    margin-bottom: 10px;
+    /* Espaço entre o título e o parágrafo */
+    text-align: center;
+    /* Centraliza o título */
 }
 
 /* Estilo para o parágrafo principal */
 .content p {
-    font-size: 18px;       /* Fonte um pouco maior */
-    margin: 20px 40px;     /* Espaço em cima/baixo e maior nas laterais */
-    line-height: 1.6;      /* Altura da linha para melhor leitura */
-    text-align: center;    /* Também centraliza o texto */
+    font-size: 18px;
+    /* Fonte um pouco maior */
+    margin: 20px 40px;
+    /* Espaço em cima/baixo e maior nas laterais */
+    line-height: 1.6;
+    /* Altura da linha para melhor leitura */
+    text-align: center;
+    /* Também centraliza o texto */
 }
 
+table {
+    width: 90%;
+    margin: 30px auto;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+th,
+td {
+    padding: 12px 20px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+tbody tr:hover {
+    background-color: #f9f9f9;
+}

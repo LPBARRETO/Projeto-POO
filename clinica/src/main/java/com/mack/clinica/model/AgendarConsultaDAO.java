@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,9 +74,21 @@ public class AgendarConsultaDAO {
             stmt.setInt(1, pacienteId);
             ResultSet rs = stmt.executeQuery();
 
+            // formatando a data e hora
+            DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            
             while (rs.next()) {
                 Consulta c = new Consulta();
-                c.setDataHora(rs.getString("data_hora"));
+
+                String dataHoraOriginal = rs.getString("data_hora");
+
+                // Converte e formata data/hora
+                LocalDateTime dt = LocalDateTime.parse(dataHoraOriginal);
+                c.setDataFormatada(dt.format(dataFormatter));
+                c.setHoraFormatada(dt.format(horaFormatter));
+
+                // c.setDataHora(rs.getString("data_hora")); Data hora original
                 c.setNomeMedico(rs.getString("medico_nome"));
                 c.setStatus(rs.getString("status"));
                 lista.add(c);
