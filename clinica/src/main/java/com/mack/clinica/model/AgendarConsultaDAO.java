@@ -62,7 +62,7 @@ public class AgendarConsultaDAO {
         List<Consulta> lista = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection(realPath)) {
             String sql = """
-                        SELECT c.data_hora, u.nome AS medico_nome
+                        SELECT c.data_hora, c.status, u.nome AS medico_nome
                         FROM consultas c
                         JOIN usuarios u ON c.profissional_id = u.id
                         WHERE c.paciente_id = ?
@@ -76,6 +76,7 @@ public class AgendarConsultaDAO {
                 Consulta c = new Consulta();
                 c.setDataHora(rs.getString("data_hora"));
                 c.setNomeMedico(rs.getString("medico_nome"));
+                c.setStatus(rs.getString("status"));
                 lista.add(c);
             }
 
