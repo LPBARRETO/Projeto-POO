@@ -1,5 +1,6 @@
 package com.mack.clinica.model;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mack.clinica.util.DatabaseConnection;
+
 
 public class AgendarConsultaDAO {
 
@@ -56,4 +58,31 @@ public class AgendarConsultaDAO {
         return medicos;
     }
     
+    public static List<Consulta> buscarPorPaciente(int pacienteId, String realPath) {
+        List<Consulta> lista = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.getConnection(realPath)) {
+            String sql = """
+                        SELECT c.data_hora, u.nome AS medico_nome
+                        FROM consultas c
+                        JOIN usuarios u ON c.profissional_id = u.id
+                        WHERE c.paciente_id = ?
+                        ORDER BY c.data_hora
+                    """;
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, pacienteId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Consulta c = new Consulta();
+                c.setDataHora(rs.getString("data_hora"));
+                c.setNomeMedico(rs.getString("medico_nome"));
+                lista.add(c);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar consultas do paciente.", e);
+        }
+        return lista;
+    }
 }
