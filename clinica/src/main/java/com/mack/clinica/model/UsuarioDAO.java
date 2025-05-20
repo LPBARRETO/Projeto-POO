@@ -2,6 +2,7 @@ package com.mack.clinica.model;
 
 import com.mack.clinica.util.DatabaseConnection;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,6 +38,33 @@ public class UsuarioDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao buscar usuário no banco de dados.", e);
+        }
+        return null;
+    }
+
+    // Busca os dados COMPLETOS do usuario
+    public static Usuario buscarPorId(int id, String realPathBase) {
+        try (Connection conn = DatabaseConnection.getConnection(realPathBase)) {
+            String sql = "SELECT id, nome, email, cpf, celular, tipo FROM usuarios WHERE id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getInt("id"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setCpf(rs.getString("cpf"));
+                usuario.setCelular(rs.getString("celular"));
+                usuario.setTipo(rs.getString("tipo"));
+                return usuario;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar usuário por ID no banco de dados.", e);
         }
         return null;
     }
