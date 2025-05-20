@@ -1,7 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
     <%@ page import="com.mack.clinica.model.Usuario" %>
         <% Usuario usuario=(Usuario) request.getAttribute("usuario"); %>
-            <!DOCTYPE html>
+        
+
+        <!DOCTYPE html>
             <html>
 
             <head>
