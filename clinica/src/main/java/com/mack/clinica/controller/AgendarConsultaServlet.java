@@ -1,9 +1,11 @@
 package com.mack.clinica.controller;
 
 import java.io.IOException;
+
 import java.util.List;
 
 import com.mack.clinica.model.AgendarConsultaDAO;
+import com.mack.clinica.model.Consulta;
 import com.mack.clinica.model.Usuario;
 
 import jakarta.servlet.ServletException;
@@ -31,10 +33,11 @@ public class AgendarConsultaServlet extends HttpServlet {
         // Encaminha para a página de agendamento
         request.getRequestDispatcher("/agendar_consulta.jsp").forward(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         try {
             // Pega dados do formulário
             int profissionalId = Integer.parseInt(request.getParameter("profissionalId"));
@@ -62,12 +65,17 @@ public class AgendarConsultaServlet extends HttpServlet {
             boolean sucesso = dao.agendarConsulta(pacienteId, profissionalId, dataHora);
             System.out.println("Sucesso: " + sucesso);
             if (sucesso) {
-                // apresenta o pop-up de sucesso e mensagem_sucesso.jsp redireciona para o painel do paciente
+                // apresenta o pop-up de sucesso e mensagem_sucesso.jsp redireciona para o
+                // painel do paciente
                 response.sendRedirect("/mensagem_sucesso.jsp");
 
-            } else {
-                response.sendRedirect("index.jsp?erro=agendar");
-            }
+            } else{
+                response.sendRedirect("/mensagem_falha.jsp"); /*mostrando a mensagem de erro ao tentar inserir uma data que já passou */
+            } 
+            
+            // else {
+            //     response.sendRedirect("index.jsp?erro=agendar");
+            // }
 
         } catch (Exception e) {
             e.printStackTrace();

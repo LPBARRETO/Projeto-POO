@@ -1,6 +1,5 @@
 package com.mack.clinica.model;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +11,6 @@ import java.util.List;
 
 import com.mack.clinica.util.DatabaseConnection;
 
-
 public class AgendarConsultaDAO {
 
     private String realPathBase;
@@ -23,6 +21,15 @@ public class AgendarConsultaDAO {
 
     public boolean agendarConsulta(int pacienteId, int profissionalId, String dataHora) {
         String sql = "INSERT INTO consultas (paciente_id, profissional_id, data_hora, status, observacoes) VALUES (?, ?, ?, 'agendada', '')";
+        
+        // melhorando a forma como as consultas são agendadas
+        LocalDateTime dataConsulta = LocalDateTime.parse(dataHora);
+        LocalDateTime agora = LocalDateTime.now();
+
+        if (dataConsulta.isBefore(agora)) {
+            System.out.println("Não é possível agendar uma consulta para uma data passada.");
+            return false; // Impede o agendamento de datas no passado
+        }
 
         try (Connection conn = DatabaseConnection.getConnection(realPathBase)) {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -42,11 +49,11 @@ public class AgendarConsultaDAO {
     public List<Usuario> listarMedicos() {
         List<Usuario> medicos = new ArrayList<>();
         String sql = "SELECT id, nome FROM usuarios WHERE tipo = 'medico'";
-    
+
         try (Connection conn = DatabaseConnection.getConnection(realPathBase);
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-    
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 Usuario u = new Usuario();
                 u.setId(rs.getInt("id"));
@@ -56,10 +63,10 @@ public class AgendarConsultaDAO {
         } catch (SQLException e) {
             System.err.println("Erro ao buscar médicos: " + e.getMessage());
         }
-    
+
         return medicos;
     }
-    
+
     public static List<Consulta> buscarPorPaciente(int pacienteId, String realPath) {
         List<Consulta> lista = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection(realPath)) {
@@ -77,7 +84,9 @@ public class AgendarConsultaDAO {
             // formatando a data e hora
             DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm");
-            
+
+            LocalDateTime agora = LocalDateTime.now(); // Hora atual para comparação
+
             while (rs.next()) {
                 Consulta c = new Consulta();
 
@@ -90,7 +99,15 @@ public class AgendarConsultaDAO {
 
                 // c.setDataHora(rs.getString("data_hora")); Data hora original
                 c.setNomeMedico(rs.getString("medico_nome"));
-                c.setStatus(rs.getString("status"));
+                // c.setStatus(rs.getString("status")); Status original da tabela, só marca como agendado
+
+                // Verifica se a data já passou para mudar o status
+                if (dt.isBefore(agora)) {
+                    c.setStatus("realizada");
+                } else {
+                    c.setStatus(rs.getString("status")); // Mantém o status original do banco, que pode ser "agendada"
+                }
+
                 lista.add(c);
             }
 
