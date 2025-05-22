@@ -1,0 +1,20 @@
+# Ignorar diretórios de build do Maven
+**/target/
+
+# Arquivos de classes compiladas
+*.class
+
+# Configurações do VS Code
+.vscode/
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de pacotes Java
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
