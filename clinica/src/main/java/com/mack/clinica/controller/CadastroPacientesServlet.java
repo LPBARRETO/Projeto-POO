@@ -37,6 +37,21 @@ public class CadastroPacientesServlet extends UsuarioCrudServlet<Paciente> {
     }
 
     @Override
+    protected String getListagemJsp() {
+        return "/cadastro_pacientes.jsp";
+    }
+
+    @Override
+    protected String getFormularioJsp() {
+        return "/pacientes_form.jsp";
+    }
+
+@Override
+    protected String getRedirectUrl() {
+    return "cadastroPacientes";
+    }
+
+    @Override
     protected Paciente criarUsuario(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         String nome = request.getParameter("nome");

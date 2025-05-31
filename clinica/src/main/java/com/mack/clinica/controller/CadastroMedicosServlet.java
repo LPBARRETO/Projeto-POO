@@ -37,6 +37,21 @@ public class CadastroMedicosServlet extends UsuarioCrudServlet<Medico> {
     }
 
     @Override
+    protected String getListagemJsp() {
+        return "/cadastro_medicos.jsp";
+    }
+
+    @Override
+    protected String getFormularioJsp() {
+        return "/medicos_form.jsp";
+    }
+
+    @Override
+    protected String getRedirectUrl() {
+        return "cadastroMedicos";
+    }
+
+    @Override
     protected Medico criarUsuario(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         String nome = request.getParameter("nome");

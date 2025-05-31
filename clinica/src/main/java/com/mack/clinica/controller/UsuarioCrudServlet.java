@@ -32,6 +32,10 @@ public abstract class UsuarioCrudServlet<T extends Usuario> extends HttpServlet 
 
     private final Map<String, BiConsumer<HttpServletRequest, HttpServletResponse>> actions = new HashMap<>();
 
+    protected abstract String getListagemJsp();
+    protected abstract String getFormularioJsp();
+    protected abstract String getRedirectUrl();
+
     @Override
     public void init()  {
         actions.put("new", (request, response) -> {
@@ -61,8 +65,8 @@ public abstract class UsuarioCrudServlet<T extends Usuario> extends HttpServlet 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        String realPath = getServletContext().getRealPath("/WEB-INF/db.db");
-        // String realPath = getServletContext().getRealPath("/");
+        // String realPath = getServletContext().getRealPath("/WEB-INF/db.db");
+        String realPath = getServletContext().getRealPath("/");
 
         if (action == null || !actions.containsKey(action)) {
             listar(request, response, realPath);
@@ -75,35 +79,35 @@ public abstract class UsuarioCrudServlet<T extends Usuario> extends HttpServlet 
             throws ServletException, IOException {
         List<T> usuarios = getService().listarTodos(realPath);
         request.setAttribute("usuarios", usuarios);
-        request.getRequestDispatcher("/" + getTipo() + "s.jsp").forward(request, response);
+        request.getRequestDispatcher( getListagemJsp()).forward(request, response);
     }
 
     private void nova(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/" + getTipo() + "_form.jsp").forward(request, response);
+        request.getRequestDispatcher(getFormularioJsp()).forward(request, response);
     }
 
     private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String realPath = getServletContext().getRealPath("/WEB-INF/db.db");
-        // String realPath = getServletContext().getRealPath("/");
+        // String realPath = getServletContext().getRealPath("/WEB-INF/db.db");
+        String realPath = getServletContext().getRealPath("/");
         int id = Integer.parseInt(request.getParameter("id"));
         T usuario = getService().buscarPorId(id, realPath);
         request.setAttribute("usuario", usuario);
-        request.getRequestDispatcher("/" + getTipo() + "_form.jsp").forward(request, response);
+        request.getRequestDispatcher(getFormularioJsp()).forward(request, response);
     }
 
     private void deletar(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String realPath = getServletContext().getRealPath("/WEB-INF/db.db");
-        // String realPath = getServletContext().getRealPath("/");
+        // String realPath = getServletContext().getRealPath("/WEB-INF/db.db");
+        String realPath = getServletContext().getRealPath("/");
         int id = Integer.parseInt(request.getParameter("id"));
         getService().deletar(id, realPath);
-        response.sendRedirect("cadastro" + getTipo() + "s");
+        response.sendRedirect(getRedirectUrl());
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String realPath = getServletContext().getRealPath("/WEB-INF/db.db");
-        // String realPath = getServletContext().getRealPath("/");
+        // String realPath = getServletContext().getRealPath("/WEB-INF/db.db");
+        String realPath = getServletContext().getRealPath("/");
         T usuario = criarUsuario(request);
 
         if (usuario.getId() == 0) {
@@ -111,6 +115,6 @@ public abstract class UsuarioCrudServlet<T extends Usuario> extends HttpServlet 
         } else {
             getService().atualizar(usuario, realPath);
         }
-        response.sendRedirect("cadastro" + getTipo() + "s");
+        response.sendRedirect(getRedirectUrl());
     }
 }
