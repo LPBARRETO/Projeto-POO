@@ -12,6 +12,21 @@ public class Usuario {
     private String celular;
     private String senha;
 
+    // construtor
+    public Usuario(int id, String nome, String email, String cpf, String celular, String tipo, String senha) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.cpf = cpf;
+        this.celular = celular;
+        this.tipo = tipo;
+        this.senha = senha;
+    }
+
+    public Usuario() {
+
+    }
+
     // Getters e Setters
     public int getId() {
         return id;
@@ -37,11 +52,11 @@ public class Usuario {
         this.tipo = tipo;
 
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
